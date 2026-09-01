@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Bitcoin Community Reserves & Treasuries — Study Guide | BWS</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy: #0a0e1a;
+    --navy-mid: #111827;
+    --navy-card: #161d2e;
+    --navy-border: #1e2a3d;
+    --gold: #f0a500;
+    --gold-light: #F5C842;
+    --gold-dim: #C8881A;
+    --gold-glow: rgba(240,165,0,0.12);
+    --gold-glow-strong: rgba(240,165,0,0.22);
+    --text: #e8eaf0;
+    --text-muted: #8a9bb5;
+    --text-dim: #4a5a72;
+    --green: #22c55e;
+    --red: #ef4444;
+    --red-glow: rgba(239,68,68,0.1);
+    --blue: #3b82f6;
+    --blue-glow: rgba(59,130,246,0.1);
+    --purple: #a855f7;
+    --purple-glow: rgba(168,85,247,0.1);
+    --radius: 10px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--navy);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 24px 100px; }
+  .layout { display: grid; grid-template-columns: 230px 1fr; gap: 40px; align-items: start; }
+  @media (max-width: 860px) { .layout { grid-template-columns: 1fr; } .toc { position: static !important; } }
+
+  /* HEADER */
+  header { text-align: center; padding: 56px 0 36px; border-bottom: 1px solid var(--navy-border); margin-bottom: 40px; }
+  .eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+  header h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 7vw, 60px); letter-spacing: 0.04em; line-height: 1; color: var(--gold); text-shadow: 0 0 60px rgba(240,165,0,0.3); margin-bottom: 10px; }
+  header h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(15px, 3vw, 20px); letter-spacing: 0.06em; color: var(--text-muted); font-weight: 400; margin-bottom: 18px; }
+  .header-note { max-width: 620px; margin: 0 auto; font-size: 14px; color: var(--text-muted); }
+  .header-badges { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 18px; }
+  .hbadge { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold-dim); background: var(--gold-glow); border: 1px solid rgba(240,165,0,0.25); border-radius: 100px; padding: 5px 14px; }
+
+  /* TOC */
+  .toc { position: sticky; top: 24px; background: var(--navy-card); border: 1px solid var(--navy-border); border-radius: var(--radius); padding: 18px; }
+  .toc-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 12px; }
+  .toc a { display: block; font-size: 13px; color: var(--text-muted); text-decoration: none; padding: 7px 0; border-bottom: 1px solid var(--navy-border); transition: color 0.15s; }
+  .toc a:last-child { border-bottom: none; }
+  .toc a:hover { color: var(--gold); }
+  .toc a span { color: var(--gold-dim); font-family: 'DM Mono', monospace; font-size: 11px; margin-right: 6px; }
+
+  /* SECTION BLOCKS */
+  .sg-section { margin-bottom: 64px; padding-top: 8px; scroll-margin-top: 20px; }
+  .sg-eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-dim); margin-bottom: 8px; }
+  .sg-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(26px, 4vw, 36px); letter-spacing: 0.03em; color: var(--gold); line-height: 1.1; margin-bottom: 10px; }
+  .sg-thesis { font-size: 16px; color: var(--text); border-left: 3px solid var(--gold); padding-left: 14px; margin-bottom: 22px; font-style: italic; color: var(--text-muted); }
+
+  .sg-block { margin-bottom: 22px; }
+  .sg-h4 { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+
+  .talk-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .talk-list li { position: relative; padding-left: 22px; font-size: 14.5px; color: var(--text); }
+  .talk-list li::before { content: '▸'; position: absolute; left: 0; color: var(--gold); font-weight: 700; }
+  .talk-list li strong { color: var(--gold-light); }
+
+  .quote-box { border: 1px solid var(--gold-dim); border-radius: 10px; padding: 16px 20px; margin: 6px 0; background: var(--gold-glow); }
+  .quote-box p { font-family: 'Bebas Neue', sans-serif; font-size: 17px; letter-spacing: 0.02em; color: var(--gold); line-height: 1.35; }
+
+  .stat-row { display: flex; flex-wrap: wrap; gap: 10px; }
+  .stat-chip { background: var(--navy-mid); border: 1px solid var(--navy-border); border-radius: 8px; padding: 10px 14px; flex: 1; min-width: 150px; }
+  .stat-chip .sc-val { display: block; font-family: 'DM Mono', monospace; font-size: 15px; color: var(--gold); font-weight: 600; }
+  .stat-chip .sc-lbl { display: block; font-size: 11.5px; color: var(--text-muted); margin-top: 2px; }
+
+  .term-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px; }
+  @media (max-width: 600px) { .term-grid { grid-template-columns: 1fr; } }
+  .term-row { font-size: 13.5px; padding: 6px 0; border-bottom: 1px dashed var(--navy-border); }
+  .term-row strong { color: var(--gold-light); font-weight: 600; }
+  .term-row span { color: var(--text-muted); }
+
+  .discuss-box { background: var(--blue-glow); border: 1px solid rgba(59,130,246,0.25); border-radius: 10px; padding: 16px 18px; }
+  .discuss-box ol { padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
+  .discuss-box li { font-size: 14px; color: var(--text); }
+
+  .bridge-box { background: var(--purple-glow); border-left: 3px solid var(--purple); border-radius: 0 8px 8px 0; padding: 12px 16px; font-size: 13.5px; color: var(--text-muted); margin-top: 8px; }
+  .bridge-box strong { color: #d8b4fe; }
+
+  .caution-box { background: var(--red-glow); border-left: 3px solid var(--red); border-radius: 0 8px 8px 0; padding: 12px 16px; font-size: 13.5px; color: var(--text-muted); margin-top: 8px; }
+  .caution-box strong { color: #f87171; }
+
+  .lesson-recap { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-dim); letter-spacing: 0.04em; margin-bottom: 4px; }
+
+  .divider { height: 1px; background: linear-gradient(90deg, transparent, var(--navy-border), transparent); margin: 8px 0 40px; }
+
+  footer { text-align: center; padding: 40px 0 20px; border-top: 1px solid var(--navy-border); margin-top: 20px; font-size: 12px; color: var(--text-dim); }
+
+  @media print {
+    body { background: white; color: #111; }
+    .toc { display: none; }
+    .layout { display: block; }
+    .sg-section { break-inside: avoid; page-break-after: always; }
+  }
+
+  /* PART DIVIDERS */
+  .part-header { margin: 12px 0 36px; text-align: center; }
+  .part-eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim); }
+  .part-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(22px, 4vw, 30px); letter-spacing: 0.04em; color: var(--text-muted); margin-top: 6px; }
+  .part-header.core .part-eyebrow { color: var(--gold); }
+  .part-header.core .part-title { color: var(--gold); text-shadow: 0 0 40px rgba(240,165,0,0.35); font-size: clamp(28px, 5vw, 42px); }
+  .part-note { max-width: 560px; margin: 10px auto 0; font-size: 13px; color: var(--text-muted); }
+  .part-rule { height: 2px; background: linear-gradient(90deg, transparent, var(--gold-dim), transparent); margin: 18px auto 0; max-width: 300px; }
+
+  .recap-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .recap-list li { position: relative; padding-left: 26px; font-size: 14px; color: var(--text-muted); }
+  .recap-list li::before { content: '—'; position: absolute; left: 0; color: var(--text-dim); }
+  .recap-list li strong { color: var(--text); }
+  .recap-card { background: var(--navy-card); border: 1px solid var(--navy-border); border-radius: var(--radius); padding: 20px 22px; margin-bottom: 16px; }
+  .recap-card .rc-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gold-dim); letter-spacing: 0.1em; text-transform: uppercase; }
+  .recap-card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 19px; letter-spacing: 0.02em; color: var(--gold-light); margin: 4px 0 10px; }
+
+  .core-flag { display: inline-block; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--navy); background: var(--gold); border-radius: 100px; padding: 4px 12px; margin-bottom: 10px; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Block Wall Street</div>
+  <h1>Bitcoin Reserves &amp; Treasuries</h1>
+  <h2>Reserve vs. Treasury · PMAs · Tokenized Gold &amp; Stocks — Study Guide</h2>
+  <p class="header-note">Why communities benefit from having <strong>both</strong> a long-term Bitcoin Reserve and a working Treasury, how a <strong>Private Membership Association</strong> can govern both, and how the tokenization of gold and stocks is closing an access gap that once made those assets institutional-only. This guide opens with a brief historical foundation before turning to those core topics.</p>
+  <div class="header-badges">
+    <span class="hbadge">Reserve vs. Treasury</span>
+    <span class="hbadge">PMA Governance</span>
+    <span class="hbadge">Tokenized Gold &amp; Stocks</span>
+    <span class="hbadge">2026 Update</span>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="toc">
+    <div class="toc-title">Jump To Section</div>
+    <a href="#recap"><span>—</span>Historical Recap (1–7)</a>
+    <a href="#s8"><span>08</span>Community Bitcoin Reserve</a>
+    <a href="#s9-l1"><span>★</span>Reserve vs. Treasury</a>
+    <a href="#s9-l2"><span>★</span>The PMA</a>
+    <a href="#s9-l3"><span>★</span>Structuring It Together</a>
+    <a href="#s9-l4"><span>★</span>Tokenized Gold</a>
+    <a href="#s9-l5"><span>★</span>Tokenized Stocks</a>
+    <a href="#s9-l6"><span>★</span>Diversified Strategy</a>
+  </nav>
+
+  <main>
+    <!-- ============ CONDENSED RECAP: SECTIONS 1-7 ============ -->
+    <section class="sg-section" id="recap">
+      <div class="part-header">
+        <div class="part-eyebrow">Historical Foundation</div>
+        <div class="part-title">The Historical Foundation, in Brief</div>
+        <p class="part-note">Sections 1–7 of the full course build the historical and technical case in depth. This is a brief summary of that foundation, before turning to the core focus of this guide: Reserves, Treasuries, PMAs, and tokenization.</p>
+      </div>
+
+      <div class="recap-card">
+        <div class="rc-num">Sections 1–2 · The Principle & The Pattern</div>
+        <h3>Capital Controls Outcomes</h3>
+        <ul class="recap-list">
+          <li><strong>Political power follows financial power</strong> — who controls capital shapes economic and political outcomes. Not theory; a mechanism you can trace.</li>
+          <li>Thriving Black economic ecosystems were <strong>built intentionally</strong>, not accidental — banking, business, real estate, and civic institutions working together, with community banking as the pillar that made everything else possible.</li>
+        </ul>
+      </div>
+
+      <div class="recap-card">
+        <div class="rc-num">Section 3 · Chicago as a Case Study</div>
+        <h3>Bronzeville — Proof It Worked</h3>
+        <ul class="recap-list">
+          <li><strong>Jesse Binga</strong> founded Binga State Bank in 1921 — the financial foundation, giving South Side families mortgages and loans redlining denied elsewhere.</li>
+          <li><strong>The Jones Brothers</strong> built the business infrastructure with their department store; <strong>Teddy Roe's</strong> policy numbers network shows communities building alternative financial systems when traditional ones exclude them — a direct forerunner to today's Bitcoin conversation.</li>
+        </ul>
+      </div>
+
+      <div class="recap-card">
+        <div class="rc-num">Section 4 · The Mechanism</div>
+        <h3>How Economic Power Became Political Power</h3>
+        <ul class="recap-list">
+          <li>Four pathways: <strong>property ownership</strong> → permanent civic stake; <strong>business ownership</strong> → local influence; <strong>institutions</strong> → organizing infrastructure; <strong>economic independence</strong> → self-governance.</li>
+        </ul>
+      </div>
+
+      <div class="recap-card">
+        <div class="rc-num">Sections 5–6 · What Was Lost, and Why It Still Matters</div>
+        <h3>Five Forces, Four Barriers</h3>
+        <ul class="recap-list">
+          <li>The <strong>Great Depression</strong>, sustained <strong>bank failures</strong>, <strong>urban renewal</strong>, banking <strong>consolidation</strong>, and <strong>capital flight</strong> dismantled the ecosystem across the 20th century.</li>
+          <li>Today's barriers are the modern residue: strict lending requirements, centralized banking control, inflation eroding purchasing power (<strong>$1 in 1980 needs ~$3.70 today</strong>), and limited access to investment opportunities.</li>
+        </ul>
+      </div>
+
+      <div class="recap-card">
+        <div class="rc-num">Section 7 · The Pivot to Solutions</div>
+        <h3>Bitcoin as Infrastructure</h3>
+        <ul class="recap-list">
+          <li>Four pillars answer the barriers directly: <strong>decentralization</strong> (no closable charter), <strong>scarcity</strong> (21 million cap, currently 3.125 BTC per block through 2028), <strong>self-custody</strong> (no institution can freeze it), and <strong>transparency</strong> (public, verifiable proof of reserves).</li>
+          <li>By 2026 this is mainstream infrastructure, not fringe theory: spot Bitcoin ETFs (approved January 2024) hold <strong>$70B+</strong>, and a growing number of public companies hold Bitcoin on their balance sheets.</li>
+        </ul>
+      </div>
+
+      <div class="bridge-box">Section 8 turned these four pillars into one concrete concept — the Community Bitcoin Reserve. Everything below builds directly on that concept.</div>
+    </section>
+    <div class="divider"></div>
+
+    <!-- ============ SECTION 8 ============ -->
+    <section class="sg-section" id="s8">
+      <div class="sg-eyebrow">Section 8</div>
+      <h2 class="sg-title">🏛️ The Concept of a Community Bitcoin Reserve</h2>
+      <p class="sg-thesis">A group, organization, or community collectively accumulates and holds Bitcoin as a long-term financial asset for the benefit of present and future members.</p>
+
+      <div class="sg-block">
+        <div class="sg-h4">📋 Key Points</div>
+        <ul class="talk-list">
+          <li>This definition is the foundation for everything that follows: collectively accumulated, long-term, for present <em>and</em> future members.</li>
+          <li><strong>Historical models</strong> for this idea include an endowment (preserve principal, spend only the growth) and a sovereign wealth fund (national resources invested for future generations). Jesse Binga's bank was the 1920s version of this idea; a Bitcoin reserve is the 2020s version.</li>
+          <li><strong>Four funding sources</strong> typically feed a reserve: donations, event/program surplus, grants, and consistent small contributions. Bitcoin divides to 8 decimal places — the "Satoshi Principle" — so there's no minimum meaningful contribution.</li>
+          <li><strong>Governance</strong> is typically handled through multisignature wallets (e.g. 3-of-5), which distribute control so no single person can unilaterally move funds, and no single compromised key can either.</li>
+          <li><strong>Long-term thinking</strong> — compounding, generational equity, and resilience through economic cycles — is what separates this from a quick-win strategy.</li>
+        </ul>
+      </div>
+
+      <div class="quote-box"><p>"A group of people, an organization, or a community collectively accumulates and holds Bitcoin as a long-term financial asset for the benefit of present and future members."</p></div>
+
+      <div class="sg-block">
+        <div class="sg-h4">📊 Stats & Facts</div>
+        <div class="stat-row">
+          <div class="stat-chip"><span class="sc-val">3-of-5</span><span class="sc-lbl">example multisig threshold for a governed reserve</span></div>
+          <div class="stat-chip"><span class="sc-val">$1.7T+</span><span class="sc-lbl">Norway's sovereign wealth fund — the national-scale analogy</span></div>
+          <div class="stat-chip"><span class="sc-val">1 sat = 0.00000001 BTC</span><span class="sc-lbl">smallest unit — no minimum contribution</span></div>
+        </div>
+      </div>
+
+      <div class="discuss-box">
+        <div class="sg-h4" style="color:#93c5fd;">💬 Discussion Questions</div>
+        <ol>
+          <li>If this room started a reserve today with $10 contributions from everyone here, how do you think it should be governed — and by whom?</li>
+        </ol>
+      </div>
+
+      <div class="bridge-box">Section 8 used "reserve" and "treasury" almost interchangeably. The next six sections draw a clear line between the two.</div>
+    </section>
+    <div class="divider"></div>
+
+    <!-- ============ PART THREE: THE CORE ============ -->
+    <div class="part-header core">
+      <div class="part-eyebrow">Core Focus</div>
+      <div class="part-title">Reserve vs. Treasury · PMAs · Tokenized Gold & Stocks</div>
+      <p class="part-note">Six sections make up the core of this guide, each able to stand on its own but strongest read in order.</p>
+      <div class="part-rule"></div>
+    </div>
+
+    <!-- ============ 9.1 RESERVE VS TREASURY ============ -->
+    <section class="sg-section" id="s9-l1">
+      <span class="core-flag">Core Lesson 1 of 6</span>
+      <div class="sg-eyebrow">Section 9 · Lesson 1</div>
+      <h2 class="sg-title">⚖️ Reserve vs. Treasury: Two Tools, Two Time Horizons</h2>
+      <p class="sg-thesis">A reserve that can never be touched can't pay for anything. That practical problem is exactly why every community needs both a Reserve and a Treasury — not one or the other.</p>
+
+      <div class="sg-block">
+        <div class="sg-h4">📋 Key Points</div>
+        <ul class="talk-list">
+          <li>A reserve designed never to be touched can't pay for routine costs like a bookkeeper or renting a hall for an event — which is exactly why every community benefits from having both a Reserve and a Treasury.</li>
+          <li><strong>Reserve</strong> = long horizon, principal preserved, cold multisig storage, funded by donations/surplus/grants earmarked long-term, decades not budget cycles.</li>
+          <li><strong>Treasury</strong> = short-to-medium horizon, working capital, liquid mix of stablecoins + some Bitcoin + cash, regularly drawn down and replenished against a budget.</li>
+          <li>In practice, many organizations use a <strong>three-rung liquidity ladder</strong>: Rung 1 Operating Treasury (0–12 months, a full year of known expenses); Rung 2 Strategic Buffer (1–5 years, planned capital projects); Rung 3 Community Bitcoin Reserve (5+ years, generational).</li>
+          <li>Real-world parallels include a university endowment vs. its operating budget; Norway's sovereign wealth fund vs. its general government budget; and a public company's Bitcoin treasury vs. its working capital.</li>
+          <li>Two common failure modes: the <strong>drained reserve</strong> (raiding long-term savings for a bad quarter, and never rebuilding trust to recover it) and the <strong>frozen treasury</strong> (locking every dollar away and being unable to pay a routine bill).</li>
+        </ul>
+      </div>
+
+      <div class="quote-box"><p>"A Treasury protects the Reserve. A Reserve gives the Treasury something to grow toward."</p></div>
+
+      <div class="sg-block">
+        <div class="sg-h4">📊 Reserve vs. Treasury — At a Glance</div>
+        <div class="term-grid">
+          <div class="term-row"><strong>Time Horizon</strong> — <span>Treasury: weeks–years · Reserve: 5+ years, generational</span></div>
+          <div class="term-row"><strong>Asset Mix</strong> — <span>Treasury: cash/stablecoins/some BTC · Reserve: primarily cold-stored BTC</span></div>
+          <div class="term-row"><strong>Access Pattern</strong> — <span>Treasury: regularly drawn down · Reserve: rare, deliberate withdrawals</span></div>
+          <div class="term-row"><strong>Governance Threshold</strong> — <span>Treasury: e.g. 2-of-3 · Reserve: e.g. 4-of-7</span></div>
+        </div>
+      </div>
+
+      <div class="discuss-box">
+        <div class="sg-h4" style="color:#93c5fd;">💬 Discussion Questions</div>
+        <ol>
+          <li>Has this community — or your own household — ever raided long-term savings for a short-term need? What happened afterward?</li>
+          <li>If you were setting the split today, what percentage of new contributions would go to the Treasury versus the Reserve?</li>
+        </ol>
+      </div>
+    </section>
+    <div class="divider"></div>
+
+    <!-- ============ 9.2 THE PMA ============ -->
+    <section class="sg-section" id="s9-l2">
+      <span class="core-flag">Core Lesson 2 of 6</span>
+      <div class="sg-eyebrow">Section 9 · Lesson 2</div>
+      <h2 class="sg-title">🤝 The Private Membership Association: A Legal Home for Community Wealth</h2>
+      <p class="sg-thesis">A Reserve and a Treasury need somewhere to legally live. The Private Membership Association (PMA) is the governance container communities are researching for exactly that purpose.</p>
+
+      <div class="sg-block">
+        <div class="sg-h4">📋 Key Points</div>
+        <ul class="talk-list">
+          <li>A PMA is a private, contract-based association of members, governed by a written membership agreement — not a public-facing corporation selling to the general public.</li>
+          <li>This structure is rooted in historical precedent: Bronzeville's mutual aid societies, and the broader tradition of fraternal benefit societies — Prince Hall Masons, Odd Fellows, Knights of Pythias — who ran their own internal insurance and mutual-benefit funds under member-written bylaws, long before their members had fair access to mainstream banking.</li>
+          <li>This connects to BWS's own research into the UPMA (United Precious Metals Association) member-owned depository model, which uses the same private-association principle — just applied to gold instead of Bitcoin.</li>
+          <li>A PMA is a documented private agreement — it is not a substitute for an LLC's liability shield, a nonprofit's tax exemption, or a trust's protections. Each tool does a different job.</li>
+        </ul>
+      </div>
+
+      <div class="sg-block">
+        <div class="sg-h4">🔑 Key Terms</div>
+        <div class="term-grid">
+          <div class="term-row"><strong>PMA</strong> — <span>private, member-governed legal container</span></div>
+          <div class="term-row"><strong>Membership Agreement</strong> — <span>the PMA's foundational governance document</span></div>
+          <div class="term-row"><strong>Fraternal Benefit Society</strong> — <span>historical precedent — member-run mutual funds</span></div>
+          <div class="term-row"><strong>Common-Law Association</strong> — <span>the legal principle a PMA is built on</span></div>
+        </div>
+      </div>
+
+      <div class="caution-box"><strong>Important:</strong> A PMA is a governance tool, not a way to opt out of taxes, banking rules, or securities law. This is education, not a substitute for a licensed attorney and accountant familiar with your state and activities.</div>
+
+      <div class="discuss-box">
+        <div class="sg-h4" style="color:#93c5fd;">💬 Discussion Questions</div>
+        <ol>
+          <li>If this community formed a PMA tomorrow, who would you trust to sit on the Board of Trustees — and why?</li>
+        </ol>
+      </div>
+    </section>
+    <div class="divider"></div>
+
+    <!-- ============ 9.3 STRUCTURING TOGETHER ============ -->
+    <section class="sg-section" id="s9-l3">
+      <span class="core-flag">Core Lesson 3 of 6</span>
+      <div class="sg-eyebrow">Section 9 · Lesson 3</div>
+      <h2 class="sg-title">🔗 Structuring It Together: PMA, Treasury & Reserve as One System</h2>
+      <p class="sg-thesis">On their own, a Reserve, a Treasury, and a PMA are each just one piece. Here's how community contributions flow through documented governance into two purpose-built pools.</p>
+
+      <div class="sg-block">
+        <div class="sg-h4">📋 Key Points</div>
+        <ul class="talk-list">
+          <li>Funds generally flow as follows: Members Contribute → the PMA Governs (splitting allocation under the membership agreement) → the Treasury funds operations while the Reserve compounds untouched.</li>
+          <li>Specific roles make this governance real rather than theoretical: a Membership Agreement (the rulebook), a Board of Trustees (elected, multisig-holding), a Treasurer (handles routine budgeted spending), Multisig Governance (different thresholds per pool), Proof of Reserves (public verifiability), and regular Membership Meetings (quarterly or annual accountability).</li>
+          <li>Amendment procedures matter because a governance document that can never change gets abandoned, while one that changes too easily protects no one. The usual fix — advance notice, a supermajority vote, and a waiting period — is the same discipline fraternal societies used for a century.</li>
+        </ul>
+      </div>
+
+      <div class="sg-block">
+        <div class="sg-h4">🔑 Key Terms</div>
+        <div class="term-grid">
+          <div class="term-row"><strong>Board of Trustees</strong> — <span>elected, multisig-holding governance body</span></div>
+          <div class="term-row"><strong>Treasurer</strong> — <span>handles routine, pre-approved disbursements</span></div>
+          <div class="term-row"><strong>Proof of Reserves</strong> — <span>public, on-chain balance verification</span></div>
+          <div class="term-row"><strong>Amendment Process</strong> — <span>notice + supermajority + waiting period</span></div>
+        </div>
+      </div>
+
+      <div class="discuss-box">
+        <div class="sg-h4" style="color:#93c5fd;">💬 Discussion Questions</div>
+        <ol>
+          <li>How many trustees feels right for this community — enough for real accountability, but not so many that decisions stall?</li>
+        </ol>
+      </div>
+    </section>
+    <div class="divider"></div>
+
+    <!-- ============ 9.4 TOKENIZED GOLD ============ -->
+    <section class="sg-section" id="s9-l4">
+      <span class="core-flag">Core Lesson 4 of 6</span>
+      <div class="sg-eyebrow">Section 9 · Lesson 4</div>
+      <h2 class="sg-title">🪙 Tokenized Precious Metals: Gold and Silver Go On-Chain</h2>
+      <p class="sg-thesis">Gold and silver have been stores of value for thousands of years. In 2026, they can be held as blockchain tokens — closing an access gap that used to require a dealer relationship most everyday people never had.</p>
+
+      <div class="sg-block">
+        <div class="sg-h4">📋 Key Points</div>
+        <ul class="talk-list">
+          <li>A token like PAXG or XAUT represents one troy ounce of physical gold, held by a regulated custodian, independently audited on a recurring schedule.</li>
+          <li>The mechanism works in four steps: an issuer acquires physical gold → mints matching tokens → the tokens trade freely 24/7 → a holder can redeem tokens for physical metal at issuer-set minimums.</li>
+          <li>Owning meaningful amounts of gold used to require a bullion dealer, private storage, insurance, and shipping — real barriers for a community organization with no existing dealer relationship. Tokenized gold removes almost all of that friction, in increments as small as a fraction of a gram.</li>
+          <li>Issuers differ meaningfully: PAXG (NYDFS-regulated, bar-serialized) vs. XAUT (Tether-ecosystem liquidity) vs. Kinesis KAU/KAG (pays holders a yield the other two don't).</li>
+          <li>Tokenized gold volume topped <strong>$90B in Q1 2026 alone</strong> — more than all of 2025 combined — as gold prices approached historic highs near $5,000/oz.</li>
+          <li>Four risk categories apply: issuer risk, smart contract risk, de-peg risk, and regulatory risk.</li>
+        </ul>
+      </div>
+
+      <div class="quote-box"><p>"A digital-native version of the UPMA depository model — a shared, verifiable claim on a real, vaulted reserve, just settled on a blockchain instead of a paper warehouse receipt."</p></div>
+
+      <div class="sg-block">
+        <div class="sg-h4">📊 Stats to Cite</div>
+        <div class="stat-row">
+          <div class="stat-chip"><span class="sc-val">$90B+</span><span class="sc-lbl">tokenized gold trading volume, Q1 2026</span></div>
+          <div class="stat-chip"><span class="sc-val">~$5,000/oz</span><span class="sc-lbl">gold price levels approached in 2026</span></div>
+          <div class="stat-chip"><span class="sc-val">1:1</span><span class="sc-lbl">token-to-physical-gold backing ratio</span></div>
+        </div>
+      </div>
+
+      <div class="discuss-box">
+        <div class="sg-h4" style="color:#93c5fd;">💬 Discussion Questions</div>
+        <ol>
+          <li>Before today, had anyone here ever considered owning gold as part of their savings? What stopped you?</li>
+        </ol>
+      </div>
+    </section>
+    <div class="divider"></div>
+
+    <!-- ============ 9.5 TOKENIZED STOCKS ============ -->
+    <section class="sg-section" id="s9-l5">
+      <span class="core-flag">Core Lesson 5 of 6</span>
+      <div class="sg-eyebrow">Section 9 · Lesson 5</div>
+      <h2 class="sg-title">📈 Tokenized Stocks: Equity Access Without the Old Gatekeepers</h2>
+      <p class="sg-thesis">The same exclusion pattern that has historically applied to banking has applied to equity investing too. Tokenized stocks lower that floor dramatically.</p>
+
+      <div class="sg-block">
+        <div class="sg-h4">📋 Key Points</div>
+        <ul class="talk-list">
+          <li>A Stock Token is an ERC-20-style token whose price tracks a public company's stock via an oracle feed (e.g. Chainlink), issued by a regulated entity holding the real shares in custody (e.g. via BitGo).</li>
+          <li>The clearest comparison is to an American Depositary Receipt (ADR): just like a decades-old ADR gives a U.S. investor price exposure to a foreign stock without owning the actual foreign share, a Stock Token gives price exposure to a U.S. company without shareholder voting rights or direct legal ownership.</li>
+          <li>Trading happens 24/7 — no market-hours restriction, no brokerage minimum, no credit check — only a self-custody wallet and a stablecoin. It's the same barrier-removal story as tokenized gold, applied to equities.</li>
+          <li>Tokenized stock volume reached <strong>roughly $15B in Q1 2026</strong>, already surpassing all of H2 2025 — smaller and newer than tokenized gold, but growing fast.</li>
+          <li>The same four risk categories apply as with tokenized gold, with issuer and regulatory risk especially relevant given how new and region-restricted this market still is.</li>
+        </ul>
+      </div>
+
+      <div class="barrier-point" style="background:var(--red-glow);border-left:3px solid var(--red);border-radius:0 8px 8px 0;padding:14px 18px;">
+        <strong>Know what you're actually holding:</strong> a tokenized stock is not the same legal instrument as a share bought through a brokerage. Token holders typically don't get voting rights, and the whole arrangement depends on the issuer functioning as designed.
+      </div>
+
+      <div class="sg-block">
+        <div class="sg-h4">📊 Stats to Cite</div>
+        <div class="stat-row">
+          <div class="stat-chip"><span class="sc-val">$15B</span><span class="sc-lbl">tokenized stock trading volume, Q1 2026</span></div>
+          <div class="stat-chip"><span class="sc-val">24/7</span><span class="sc-lbl">trading — no market-hours restriction</span></div>
+          <div class="stat-chip"><span class="sc-val">$0</span><span class="sc-lbl">brokerage account minimum required</span></div>
+        </div>
+      </div>
+
+      <div class="discuss-box">
+        <div class="sg-h4" style="color:#93c5fd;">💬 Discussion Questions</div>
+        <ol>
+          <li>Does the ADR comparison make tokenized stocks feel more familiar — like something Wall Street has already been doing for decades, just in a new form?</li>
+        </ol>
+      </div>
+    </section>
+    <div class="divider"></div>
+
+    <!-- ============ 9.6 DIVERSIFIED STRATEGY ============ -->
+    <section class="sg-section" id="s9-l6">
+      <span class="core-flag">Core Lesson 6 of 6</span>
+      <div class="sg-eyebrow">Section 9 · Lesson 6</div>
+      <h2 class="sg-title">🧭 Building a Diversified 2026 Community Financial Strategy</h2>
+      <p class="sg-thesis">Bring it all together: a Bitcoin-centered Reserve, a diversified Treasury sleeve, PMA governance holding it all — the same cooperative wisdom Bronzeville used, applied with 2026's fuller toolkit.</p>
+
+      <div class="sg-block">
+        <div class="sg-h4">📋 Key Points</div>
+        <ul class="talk-list">
+          <li>This mirrors Bronzeville's own diversification — banking, retail, and informal finance working together, not one institution carrying the whole community. The same instinct applies here to asset types instead of business types.</li>
+          <li>One illustrative structure: the <strong>Reserve</strong> stays Bitcoin-centered and cold-stored, unchanged from Section 8. The <strong>Treasury</strong> diversifies across stablecoins (liquidity), tokenized gold (a stability hedge), and tokenized stocks (growth, sized conservatively).</li>
+          <li>A regular <strong>rebalancing cadence</strong> — a scheduled quarterly or annual trustee review comparing actual holdings to target allocations and correcting drift — is what turns diversification into a discipline rather than a one-time decision.</li>
+          <li>None of these tools replace multisig thresholds, proof of reserves, or a documented membership agreement. Tools change; governance discipline is the constant.</li>
+        </ul>
+      </div>
+
+      <div class="sg-block">
+        <div class="sg-h4">🔑 The Illustrative Structure — At a Glance</div>
+        <div class="term-grid">
+          <div class="term-row"><strong>Reserve (Long-Term Core)</strong> — <span>primarily Bitcoin, cold storage, decades-long horizon</span></div>
+          <div class="term-row"><strong>Treasury (Diversified Sleeve)</strong> — <span>stablecoins + tokenized gold + tokenized equities</span></div>
+          <div class="term-row"><strong>Governed By</strong> — <span>PMA membership agreement + Board of Trustees</span></div>
+          <div class="term-row"><strong>Reviewed</strong> — <span>quarterly or annual rebalancing cadence</span></div>
+        </div>
+      </div>
+
+      <div class="caution-box"><strong>Disclaimer:</strong> Nothing in this guide is financial, legal, or tax advice. Bitcoin and tokenized RWAs carry real volatility and risk. PMA formation requires a licensed attorney familiar with your state.</div>
+
+      <div class="discuss-box">
+        <div class="sg-h4" style="color:#93c5fd;">💬 Discussion Questions</div>
+        <ol>
+          <li>Looking at the illustrative Reserve/Treasury split — would you personally weight it more toward Bitcoin, or more toward the diversified sleeve? Why?</li>
+          <li>What's one next step this community could realistically take in the next 90 days toward building something like this?</li>
+        </ol>
+      </div>
+
+      <div class="bridge-box">From Jesse Binga's 1921 bank to a 2026 PMA holding a diversified digital reserve, the mechanism has never changed — communities that control their own capital control their own future. Only the tools have updated.</div>
+    </section>
+    <div class="divider"></div>
+
+    <!-- ============ CLOSING NOTE ============ -->
+    <section class="sg-section" id="closing">
+      <div class="sg-eyebrow">Closing Note</div>
+      <h2 class="sg-title">📎 Further Reading</h2>
+      <div class="sg-block">
+        <ul class="talk-list">
+          <li>This guide is a companion to the full 9-section interactive course, <em>Financial Power and the Return of Black Community Wealth Through Bitcoin</em>, which covers the complete history, mechanics, and quizzes in greater depth for anyone who wants to go further on their own.</li>
+        </ul>
+      </div>
+      <div class="caution-box"><strong>Disclaimer:</strong> This material is educational. Nothing in this study guide is financial, legal, or tax advice. Please consult a licensed attorney, accountant, or financial professional before making financial decisions or forming any legal entity discussed here.</div>
+    </section>
+
+    </main>
+  </div>
+</div>
+
+<footer>
+  Block Wall Street · Bitcoin Reserves &amp; Treasuries Study Guide · 2026 Edition · Companion to the full 9-section interactive course
+</footer>
+
+</body>
+</html>
